@@ -83,8 +83,9 @@
     [self.cancelButton setTitle:NSLocalizedString(@"GKIcancel",@"") forState:UIControlStateNormal];
     [self.cancelButton setTitleColor:[UIColor colorWithRed:0.173 green:0.176 blue:0.176 alpha:1] forState:UIControlStateNormal];
     [self.cancelButton setTitleShadowColor:[UIColor colorWithRed:0.827 green:0.831 blue:0.839 alpha:1] forState:UIControlStateNormal];
-    [self.cancelButton  addTarget:self action:@selector(_actionCancel) forControlEvents:UIControlEventTouchUpInside];
-    
+    [self.cancelButton addTarget:self action:@selector(_actionCancel) forControlEvents:UIControlEventTouchUpInside];
+    [self.cancelButton sizeToFit];
+    [self.cancelButton setFrame:CGRectInset(self.cancelButton.frame, -8.0, 0)];
 }
 
 - (void)_setupUseButton{
@@ -99,8 +100,9 @@
     [self.useButton setFrame:CGRectMake(0, 0, 50, 30)];
     [self.useButton setTitle:NSLocalizedString(@"GKIchoose",@"") forState:UIControlStateNormal];
     [self.useButton setTitleShadowColor:[UIColor colorWithRed:0.118 green:0.247 blue:0.455 alpha:1] forState:UIControlStateNormal];
-    [self.useButton  addTarget:self action:@selector(_actionUse) forControlEvents:UIControlEventTouchUpInside];
-    
+    [self.useButton addTarget:self action:@selector(_actionUse) forControlEvents:UIControlEventTouchUpInside];
+    [self.useButton sizeToFit];
+    [self.useButton setFrame:CGRectInset(self.useButton.frame, -8.0, 0)];
 }
 
 - (UIImage *)_toolbarBackgroundImage{
