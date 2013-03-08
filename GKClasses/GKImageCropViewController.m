@@ -97,7 +97,7 @@
     [[self.useButton titleLabel] setFont:[UIFont boldSystemFontOfSize:11]];
     [[self.useButton titleLabel] setShadowOffset:CGSizeMake(0, -1)];
     [self.useButton setFrame:CGRectMake(0, 0, 50, 30)];
-    [self.useButton setTitle:NSLocalizedString(@"GKIuse",@"") forState:UIControlStateNormal];
+    [self.useButton setTitle:NSLocalizedString(@"GKIchoose",@"") forState:UIControlStateNormal];
     [self.useButton setTitleShadowColor:[UIColor colorWithRed:0.118 green:0.247 blue:0.455 alpha:1] forState:UIControlStateNormal];
     [self.useButton  addTarget:self action:@selector(_actionUse) forControlEvents:UIControlEventTouchUpInside];
     
