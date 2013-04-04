@@ -27,13 +27,13 @@
     
     // center horizontally
     if (frameToCenter.size.width < boundsSize.width)
-        frameToCenter.origin.x = (boundsSize.width - frameToCenter.size.width) / 2;
+        frameToCenter.origin.x = floorf((boundsSize.width - frameToCenter.size.width) / 2);
     else
         frameToCenter.origin.x = 0;
     
     // center vertically
     if (frameToCenter.size.height < boundsSize.height)
-        frameToCenter.origin.y = (boundsSize.height - frameToCenter.size.height) / 2;
+        frameToCenter.origin.y = floorf((boundsSize.height - frameToCenter.size.height) / 2);
     else
         frameToCenter.origin.y = 0;
     
@@ -134,9 +134,8 @@
         [self.scrollView addSubview:self.imageView];
     
         
-        self.scrollView.minimumZoomScale = CGRectGetWidth(self.scrollView.frame) / CGRectGetWidth(self.imageView.frame);
-        self.scrollView.maximumZoomScale = 20.0;
-        [self.scrollView setZoomScale:1.0];
+        self.scrollView.minimumZoomScale = 1;
+        self.scrollView.maximumZoomScale = 3.0;
     }
     return self;
 }
@@ -175,30 +174,31 @@
     self.xOffset = floor((CGRectGetWidth(self.bounds) - size.width) * 0.5);
     self.yOffset = floor((CGRectGetHeight(self.bounds) - toolbarSize - size.height) * 0.5); //fixed
 
-    CGFloat height = self.imageToCrop.size.height;
-    CGFloat width = self.imageToCrop.size.width;
+    CGFloat cropRatio = size.height / size.width;
+    CGFloat imageRatio = self.imageToCrop.size.height / self.imageToCrop.size.width;
     
-    CGFloat faktor = 0.f;
+    CGFloat faktorOriginX = 0.0;
+    CGFloat faktorOriginY = 0.0;
     CGFloat faktoredHeight = 0.f;
     CGFloat faktoredWidth = 0.f;
     
-    if(width > height){
-        
-        faktor = width / size.width;
+    if (imageRatio >= cropRatio) {
+        // Fit to width
         faktoredWidth = size.width;
-        faktoredHeight =  height / faktor;
-        
-    } else {
-        
-        faktor = height / size.height;
-        faktoredWidth = width / faktor;
-        faktoredHeight =  size.height;
+        faktoredHeight = faktoredWidth * imageRatio;
+        faktorOriginY = floorf((size.height - faktoredHeight) / 2);
+    } else {                        
+        // Fit to height
+        faktoredHeight = size.height;
+        faktoredWidth = faktoredHeight / imageRatio;
+        faktorOriginX = floorf((size.width - faktoredWidth) / 2);
     }
     
     self.cropOverlayView.frame = self.bounds;
     self.scrollView.frame = CGRectMake(xOffset, yOffset, size.width, size.height);
-    self.scrollView.contentSize = CGSizeMake(size.width, size.height);
-    self.imageView.frame = CGRectMake(0, floor((size.height - faktoredHeight) * 0.5), faktoredWidth, faktoredHeight);
+    self.imageView.frame = CGRectMake(0, 0, faktoredWidth, faktoredHeight);
+    self.scrollView.contentSize = self.imageView.frame.size;
+    self.scrollView.contentOffset = CGPointMake(-faktorOriginX, -faktorOriginY);
 }
 
 #pragma mark -
